@@ -1,0 +1,9 @@
+<div class="gallery clearfix container row">
+    <div class="card" style="width: 20rem;"
+         *ngFor="let item of categoryImages[selectedCategory];let i = index;" routerLink="">
+        <img class="card-img-top" src="{{item}}" alt="Card image cap">
+        <div class="card-body">
+            body
+        </div>
+    </div>
+</div>

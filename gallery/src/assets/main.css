@@ -1,0 +1,30 @@
+h2,h3,h4{
+    color: white;
+}
+.wrapper {
+    box-sizing: border-box;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 15vh;
+}
+
+.gallery.clearfix.container.row {
+    justify-content: center;
+}
+.card {
+
+    width: 190px;
+    margin: 15px;
+}
+
+.background {
+    background: url(https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-38113.jpg);
+    /* background-color: white; */
+    height: 40vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-size: cover;
+    z-index: -2;
+}

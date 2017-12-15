@@ -1,0 +1,24 @@
+<div class="wrapper">
+    <div class="background"></div>
+    <h2>Fotogaléria</h2>
+    <h4>Kategórie</h4>
+    <hr>
+    <div class="gallery clearfix container row">
+
+        <div class="card" *ngFor="let item of categories;let i = index;" [routerLink]="['/category/'+item.id]">
+            <img class="card-img-top"
+                 src="../../../assets/images/arch.jpeg"
+                 alt="Card image cap">
+            <div class="card-body">
+                <p style="text-transform: uppercase" class="card-text">{{item.name}}</p>
+            </div>
+        </div>
+        <div class="card"
+             [routerLink]="">
+
+            <div (click)="addCategory()" class="card-body">
+                <p style="text-transform: uppercase" class="card-text">Pridať kategóriu</p>
+            </div>
+        </div>
+    </div>
+</div>
