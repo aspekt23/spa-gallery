@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import {Ng2Webstorage} from 'ngx-webstorage';
 
 import  {routing} from './app.routing';
 
@@ -20,7 +21,8 @@ import {DataService} from "./data.service";
   ],
   imports: [
     BrowserModule,
-      routing
+    routing,
+    Ng2Webstorage,
 
   ],
   providers: [DataService],

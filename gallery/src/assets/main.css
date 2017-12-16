@@ -17,9 +17,7 @@ h2,h3,h4{
     margin: 15px;
 }
 
-.background {
-    background: url(https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-38113.jpg);
-    /* background-color: white; */
+#background {
     height: 40vh;
     position: absolute;
     left: 0;
