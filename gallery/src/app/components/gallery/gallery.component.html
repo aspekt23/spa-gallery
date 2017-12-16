@@ -7,7 +7,7 @@
 
         <div class="card" *ngFor="let item of categories;let i = index;" [routerLink]="['/category/'+item.id]" >
             <img class="card-img-top"
-                 src="{{thumbnails[i]? thumbnails[i] : 'http://21642-presscdn.pagely.netdna-cdn.com/wp-content/themes/nucleare-pro/images/no-image-box.png'}}"
+                 src="http://21642-presscdn.pagely.netdna-cdn.com/wp-content/themes/nucleare-pro/images/no-image-box.png"
                  alt="Card image cap">
             <div class="card-body">
                 <p style="text-transform: uppercase" class="card-text">{{item.name}}</p>

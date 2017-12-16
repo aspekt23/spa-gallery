@@ -1,6 +1,11 @@
+<div class="wrapper">
+    <div id="background" ></div>
+    <h2>Fotogaléria</h2>
+    <h4>Kategórie</h4>
+    <hr>
 <div class="gallery clearfix container row">
     <div class="card" style="width: 20rem;"
-         *ngFor="let item of imagesCollection;let i = index;" routerLink="">
+         *ngFor="let item of imagesCollection[selectedCategory];let i = index;" routerLink="">
         <img class="card-img-top" src="{{item}}" alt="Card image cap">
         <div class="card-body">
             body

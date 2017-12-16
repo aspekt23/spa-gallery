@@ -25,10 +25,10 @@ export class GalleryComponent implements OnInit {
 
     constructor(private _dataService: DataService, private _localStorage: LocalStorageService) {
 
-        if (!this._localStorage.retrieve('categories')) {
-            this._localStorage.store('categories', this.categories);
-        } else {
+        if (this._localStorage.retrieve('categories')) {
             this.categories = this._localStorage.retrieve('categories');
+        } else {
+            this._localStorage.store('categories', this.categories);
         }
 
 
@@ -44,16 +44,19 @@ export class GalleryComponent implements OnInit {
 
 
     addCategory(categoryName): void {
-        let categories = this._localStorage.retrieve('categories');
-        console.log(categories);
-        let i = categories.length;
-        console.log(i);
-        let obj = {
-            id: i,
-            name: 'test'
-        };
-        categories.push(obj);
-        this._localStorage.store('categories', categories);
+        let name = prompt("Please enter categry name", "Title");
+        if (name != null) {
+            let categories = this._localStorage.retrieve('categories');
+            console.log(categories);
+            let i = categories.length;
+            console.log(i);
+            let obj = {
+                id: i,
+                name: name
+            };
+            categories.push(obj);
+            this._localStorage.store('categories', categories);
+        }
     }
 
     getThumbnails(): void {
