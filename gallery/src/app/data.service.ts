@@ -4,8 +4,8 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Injectable()
 export class DataService {
- private thumbnails = [];
- private initImages = [
+    private thumbnails = [];
+    private initImages = [
         ['../../../assets/images/priroda1.jpeg'],
         [
             '../../../assets/images/arch.jpeg',
@@ -21,30 +21,28 @@ export class DataService {
 
     ];
 
-    constructor( private  _localStorage: LocalStorageService) {
+    constructor(private  _localStorage: LocalStorageService) {
+
     }
 
 
     getThumbnails(): any {
-        let categoryImages = this._localStorage.retrieve('categoryImages');
         let thumbnails = [];
+        let categoryImages = this._localStorage.retrieve('categoryImages') ?
+            this._localStorage.retrieve('categoryImages') : this.initImages;
+        console.log(categoryImages);
         for (let i = 0; i <= categoryImages.length - 1; i++) {
-            this.thumbnails.push(categoryImages[i][0]);
+            if (categoryImages[i][0] !== null || categoryImages[i][0] !== 'undefined') {
+                thumbnails.push(categoryImages[i][0]);
+            }
         }
-        return thumbnails;
+
+        this._localStorage.store('thumbnails', thumbnails);
     }
 
     saveImages(images): void {
         this._localStorage.store('categoryimages', images);
     }
-
-
-
-
-
-
-
-
 
 
 }

@@ -25,25 +25,25 @@ export class GalleryComponent implements OnInit {
 
     constructor(private _dataService: DataService, private _localStorage: LocalStorageService) {
 
-        if (this._localStorage.retrieve('categories')) {
-            this.categories = this._localStorage.retrieve('categories');
-        } else {
+        if (!this._localStorage.retrieve('categories')) {
             this._localStorage.store('categories', this.categories);
         }
+
+        this.categories = this._localStorage.retrieve('categories');
 
 
     }
 
     ngOnInit() {
         this.getThumbnails();
-        this.background = this.thumbnails[0];
+        
         console.log(this.thumbnails);
-        console.log('ngonInit');
+
 
     }
 
 
-    addCategory(categoryName): void {
+    addCategory(): void {
         let name = prompt("Please enter categry name", "Title");
         if (name != null) {
             let categories = this._localStorage.retrieve('categories');
@@ -60,7 +60,9 @@ export class GalleryComponent implements OnInit {
     }
 
     getThumbnails(): void {
-        this.thumbnails = this._dataService.getThumbnails();
+        this._dataService.getThumbnails();
+        this.thumbnails = this._localStorage.retrieve('thumbnails')
+
     }
 
 
