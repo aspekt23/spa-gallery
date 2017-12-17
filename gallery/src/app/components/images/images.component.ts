@@ -30,9 +30,8 @@ export class ImagesComponent implements OnInit {
 
     constructor(route: ActivatedRoute, private _dataService: DataService,
                 private _localStorage: LocalStorageService) {
-        route
-            .params
-            .subscribe(params => {
+
+        route.params.subscribe(params => {
                 console.log(params);
                 this.selectedCategory = params['id']; // get id of selected category
 
@@ -58,7 +57,9 @@ export class ImagesComponent implements OnInit {
 
     addImage(): void {
         let allImages = this._localStorage.retrieve('categoryImages');
-        let categoryToPush = allImages[this.selectedCategory];
+        let categoryToPush = allImages[this.selectedCategory] ?
+                             allImages[this.selectedCategory] :
+                             allImages[this.selectedCategory]= [];
         let src = '../../../assets/images/arch.jpeg';
         categoryToPush.push(src);
         allImages[this.selectedCategory] = categoryToPush;
@@ -71,7 +72,9 @@ export class ImagesComponent implements OnInit {
 
 
     ngOnInit() {
+
     }
+
 
 
 }
