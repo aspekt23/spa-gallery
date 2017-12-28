@@ -66,7 +66,8 @@ export class ImagesComponent implements OnInit {
 
     showLightBox(item){
         let width = window.innerWidth - 100 ;
-        let url = 'http://api.programator.sk/images/'+width+'x0/'+item;
+        let height = window.innerHeight
+        let url = 'http://api.programator.sk/images/'+width+'x'+ height +'/'+item;
         document.getElementById('overlay').style.display = "block";
         document.getElementById('overlay').innerHTML = '<img class="lightImage" src="'+ url +'">';
     }
