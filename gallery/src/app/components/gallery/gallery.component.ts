@@ -101,15 +101,5 @@ export class GalleryComponent implements OnInit {
 
     }
 
-    // getFullPathUrl(path, width, height = 0) {
-    //     console.log('zavolal sa getFULLPATH');
-    //     let defaultImage = 'http://saveabandonedbabies.org/wp-content/uploads/2015/08/default.png';
-    //     if (path) {
-    //         var url = 'http://api.programator.sk/images/' + width + 'x' + height + '/' + path;
-    //     } else {
-    //         var url = defaultImage;
-    //     }
-    //     this.fullPathUrl = url;
-    // }
 
 }

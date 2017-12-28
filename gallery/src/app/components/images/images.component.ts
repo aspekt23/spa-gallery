@@ -3,7 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {DataService} from "../../data.service";
 import {FlashMessagesService} from 'angular2-flash-messages';
 import {Http, Headers} from "@angular/http";
-
+import {isNumber} from "util";
 
 
 @Component({
@@ -15,6 +15,7 @@ export class ImagesComponent implements OnInit {
     private selectedCategory: any;
     private imagesCollection: any;
     private headers: Headers;
+    private background: any;
 
     constructor(route: ActivatedRoute, private _dataService: DataService,
                 private _flashMessagesService: FlashMessagesService,
@@ -37,6 +38,44 @@ export class ImagesComponent implements OnInit {
 
     }
 
+    getImages() {
+        this._dataService.getImages(this.selectedCategory).subscribe(data => {
+            console.log(data);
+            this.imagesCollection = data.images;
+            console.log(this.imagesCollection);
+            let width= window.innerWidth;
+            this.background =
+                'http://api.programator.sk/images/'+ width +'x0/'+this.imagesCollection[0].fullpath;
+        });
+    }
+
+
+    removeImage(fullpath) {
+        //http://api.programator.sk/gallery/zvierata/2017-Audi-A4-20T-quattro-front-view-in-motion-02-1.jpg
+        if (confirm("are u sure ?")) {
+            this._dataService.removeImage(fullpath).subscribe(data => {
+                console.log(data);
+            });
+            this.getImages();
+            this._flashMessagesService.show('Image was successfully removed!',
+                {cssClass: 'alert-success', timeout: 1500});
+        }
+
+
+    }
+
+    showLightBox(item){
+        let height = window.innerHeight - 100 ;
+        let url = 'http://api.programator.sk/images/0x'+height+'/'+item;
+        document.getElementById('overlay').style.display = "block";
+        document.getElementById('overlay').innerHTML = '<img src="'+ url +'">';
+    }
+
+    hideOverlay(){
+        document.getElementById('overlay').style.display = "none";
+    }
+
+
     transferDataSuccess($event) {
         // let attachmentUploadUrl = 'assets/data/offerspec/offerspec.json';
         // loading the FileList from the dataTransfer
@@ -44,9 +83,6 @@ export class ImagesComponent implements OnInit {
         if (dataTransfer && dataTransfer.files) {
 
             // needed to support posting binaries and usual form values
-
-
-
             let files: FileList = dataTransfer.files;
 
             // uploading the files one by one asynchrounusly
@@ -76,30 +112,6 @@ export class ImagesComponent implements OnInit {
                 });
             }
         }
-    }
-
-
-    getImages() {
-
-        this._dataService.getImages(this.selectedCategory).subscribe(data => {
-            console.log(data);
-            this.imagesCollection = data.images;
-        });
-    }
-
-
-    removeImage(fullpath) {
-        //http://api.programator.sk/gallery/zvierata/2017-Audi-A4-20T-quattro-front-view-in-motion-02-1.jpg
-        if (confirm("are u sure ?")) {
-            this._dataService.removeImage(fullpath).subscribe(data => {
-                console.log(data);
-            });
-            this.getImages();
-            this._flashMessagesService.show('Image was successfully removed!',
-                {cssClass: 'alert-success', timeout: 1500});
-        }
-
-
     }
 
 }
