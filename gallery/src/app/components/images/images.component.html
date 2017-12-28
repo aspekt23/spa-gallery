@@ -1,17 +1,27 @@
 <div class="wrapper">
-    <div id="background" style="background-image: url({{categoryImages[0][0]}});"></div>
+    <!--<div id="background" [ngStyle]="{'background-image': url('') } url('http://api.programator.sk/images/0x156/{{imagesCollection[0].fullpath}}');"></div>-->
     <h2>Fotogaléria</h2>
     <h4>Kategórie</h4>
     <hr>
+    <flash-messages></flash-messages>
 <div class="gallery clearfix container row">
-    <div class="card" style="width: 20rem;"
-         *ngFor="let item of imagesCollection[selectedCategory];let i = index;" routerLink="">
-        <img class="card-img-top" src="{{item}}" alt="Card image cap">
+
+    <div class="card" style=""
+         *ngFor="let item of imagesCollection;">
+        <img class="card-img-top" src="http://api.programator.sk/images/0x156/{{item.fullpath}}" alt="Card image cap">
         <div class="card-body">
-            body
+            {{item.name}}
+            <img class="closeIcon" src="../../../assets/images/close.png"
+                 alt="" (click)="removeImage(item.fullpath);">
+
         </div>
     </div>
 
-    <button (click)="addImage()">Add image</button>
+    <div class="card">
+    <div class="card-block add">
+        <i class="material-icons addgallery" (click)="addImage()">add_to_photos</i>
+        Pridať obrázok
+    </div>
+</div>
 </div>
 </div>

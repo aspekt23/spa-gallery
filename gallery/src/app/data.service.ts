@@ -1,48 +1,68 @@
 import {Injectable} from '@angular/core';
-import {LocalStorageService} from 'ngx-webstorage';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Http, Response, RequestOptions, Headers} from '@angular/http';
+import {Observable} from "rxjs/Rx"
+
 
 @Injectable()
 export class DataService {
-    private thumbnails = [];
-    private initImages = [
-        ['../../../assets/images/priroda1.jpeg'],
-        [
-            '../../../assets/images/arch.jpeg',
-            '../../../assets/images/arch2.jpeg',
-            '../../../assets/images/arch3.jpeg',
-            '../../../assets/images/arch4.jpeg',
-            '../../../assets/images/arch5.jpeg',
-            '../../../assets/images/arch6.jpg'
-        ],
-        ['../../../assets/images/ludia.jpg'],
-        ['../../../assets/images/food1.jpg'],
-        ['../../../assets/images/auta.jpeg']
+    private headers: Headers;
 
-    ];
-
-    constructor(private  _localStorage: LocalStorageService) {
+    constructor(private http: Http) {
+        this.headers = new Headers();
+        this.headers.append('Content-Type', 'application/json');
+        this.headers.append('Accept', 'application/json');
 
     }
 
 
-    getThumbnails(): any {
-        let thumbnails = [];
-        let categoryImages = this._localStorage.retrieve('categoryImages') ?
-            this._localStorage.retrieve('categoryImages') : this.initImages;
-        console.log(categoryImages);
-        for (let i = 0; i <= categoryImages.length - 1; i++) {
-            if (categoryImages[i][0] !== null || categoryImages[i][0] !== 'undefined') {
-                thumbnails.push(categoryImages[i][0]);
+    getGalleries() {
+        let url = 'http://api.programator.sk/gallery';
+        return this.http.get(url,{headers: this.headers})
+            .map((res: Response) => res.json())
+            .catch((error:any) =>
+                // Do messaging and error handling here
+                Observable.throw(error.json().error || 'Server error'));
+    }
+
+    getImages(path) {
+        let url = 'http://api.programator.sk/gallery/' + path;
+        return this.http.get(url,{headers: this.headers})
+            .map((res: Response) => res.json())
+            .catch((error:any) =>
+                // Do messaging and error handling here
+                Observable.throw(error.json().error || 'Server error'));
+    }
+
+    addGallery(json) {
+        let url = 'http://api.programator.sk/gallery';
+        return this.http.post(url, json, {headers: this.headers})
+            .map((res: Response) => res.json())
+            .catch((error:any) =>
+                // Do messaging and error handling here
+                Observable.throw(error.json().error || 'Server error'));
+    }
+
+    removeGallery(path) {
+        console.log(path);
+        let url = 'http://api.programator.sk/gallery/'+path;
+        return this.http.delete(url, {headers: this.headers})
+            .map((res: Response) => res.json())
+            .catch((error:any) =>
+                // Do messaging and error handling here
+                Observable.throw(error.json().error || 'Server error'));
+    }
+
+    removeImage(path) {
+        console.log(path);
+        let url = 'http://api.programator.sk/gallery/'+path;
+        return this.http.delete(url, {headers: this.headers})
+            .map((res: Response) => res.json())
+            .catch((error:any) =>
+                // Do messaging and error handling here
+                Observable.throw(error.json().error || 'Server error'));
             }
-        }
 
-        this._localStorage.store('thumbnails', thumbnails);
-    }
 
-    saveImages(images): void {
-        this._localStorage.store('categoryimages', images);
-    }
 
 
 }

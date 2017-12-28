@@ -1,24 +1,39 @@
 <div class="wrapper">
-    <div id="background" ></div>
+    <div id="background">
+        <img src="{{background}}" alt="">
+
+    </div>
     <h2>Fotogaléria</h2>
     <h4>Kategórie</h4>
     <hr>
-    <div class="gallery clearfix container row">
+    <div class="container">
 
-        <div class="card" *ngFor="let item of categories;let i = index;" [routerLink]="['/category/'+item.id]" >
-            <img class="card-img-top"
-                 src="{{thumbnails[i] ? thumbnails[i] : '../../../assets/images/default.png' }}"
-                 alt="Card image cap">
-            <div class="card-body">
-                <p style="text-transform: uppercase" class="card-text">{{item.name}}</p>
+        <flash-messages></flash-messages>
+        <div class="gallery clearfix  row">
+
+            <div class="card" *ngFor="let item of galleries;let index = index;"
+                 (mouseenter)=" setBackground(item?.image?.fullpath)"
+                 (mouseover)="item[showCount] = true; getImagesCount(item.path);"
+                 (mouseleave)="item[showCount] = false">
+                <img class="card-img-top" [routerLink]="['/'+item.path]"
+                     [src]="item?.image?.fullpath ? path + '0x156/' + item?.image?.fullpath : defaultImage"
+                     alt="Card image cap">
+                <div class="card-block ">
+                    <h4 class="card-title imagesCount"></h4>
+                    <h4 class="card-title title">{{item.name}}</h4>
+                    <img class="closeIcon" src="../../../assets/images/close.png" alt="" (click)="removeGallery(item);">
+                    <span class="imagesCount animated zoomIn " [hidden]="!item[showCount]">{{imagesCount}}</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-block add">
+                    <i class="material-icons addgallery" (click)="addGallery()">add_to_photos</i>
+                    Pridať kategóriu
+                </div>
             </div>
         </div>
-        <div class="card"
-             [routerLink]="">
 
-            <div (click)="addCategory()" class="card-body">
-                <p style="text-transform: uppercase" class="card-text">Pridať kategóriu</p>
-            </div>
-        </div>
+
     </div>
 </div>

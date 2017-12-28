@@ -10,7 +10,7 @@ const appRoutes: Routes = [
     component: GalleryComponent,
     },
     {
-    path: 'category/:id',
+    path: ':category',
     component: ImagesComponent,
 
     }
