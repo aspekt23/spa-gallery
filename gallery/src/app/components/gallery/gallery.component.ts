@@ -21,7 +21,7 @@ export class GalleryComponent implements OnInit {
     private background: any;
     private path = 'http://api.programator.sk/images/';
 
-    constructor(private http: Http, private _dataService: DataService,
+    constructor(private _dataService: DataService,
                 private _flashMessagesService: FlashMessagesService) {
 
         this.imagesCount = '';

@@ -4,24 +4,42 @@
     <h4>Kategórie</h4>
     <hr>
     <flash-messages></flash-messages>
-<div class="gallery clearfix container row">
+    <div class="gallery clearfix container row">
 
-    <div class="card" style=""
-         *ngFor="let item of imagesCollection;">
-        <img class="card-img-top" src="http://api.programator.sk/images/0x156/{{item.fullpath}}" alt="Card image cap">
-        <div class="card-body">
-            {{item.name}}
-            <img class="closeIcon" src="../../../assets/images/close.png"
-                 alt="" (click)="removeImage(item.fullpath);">
+        <div class="card" style=""
+             *ngFor="let item of imagesCollection;">
+            <img class="card-img-top" src="http://api.programator.sk/images/0x156/{{item.fullpath}}"
+                 alt="Card image cap">
+            <div class="card-body">
+                {{item.name}}
+                <img class="closeIcon" src="../../../assets/images/close.png"
+                     alt="" (click)="removeImage(item.fullpath);">
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-block add">
+                <i class="material-icons addgallery" (click)="addImage()">add_to_photos</i>
+                Pridať obrázok
+            </div>
 
         </div>
+
+
+
     </div>
 
-    <div class="card">
-    <div class="card-block add">
-        <i class="material-icons addgallery" (click)="addImage()">add_to_photos</i>
-        Pridať obrázok
+    <h4>Simple Drag-and-Drop</h4>
+    <div class="row">
+
+        <div class="col-sm-3">
+            <div dnd-droppable class="panel panel-info"
+                 (onDropSuccess)="transferDataSuccess($event)">
+                <div class="panel-heading">Place to drop</div>
+                <div class="panel-body">
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-</div>
 </div>
