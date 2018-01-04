@@ -4,6 +4,7 @@ import {DataService} from "../../data.service";
 import {LocalStorageService} from 'ngx-webstorage';
 import {Http} from "@angular/http";
 import {FlashMessagesService} from 'angular2-flash-messages';
+import { trigger, style, animate, transition } from '@angular/animations';
 
 
 @Component({
@@ -21,10 +22,12 @@ export class GalleryComponent implements OnInit {
     private background: any;
     private path = 'http://api.programator.sk/images/';
 
+
     constructor(private _dataService: DataService,
                 private _flashMessagesService: FlashMessagesService) {
 
         this.imagesCount = '';
+
     }
 
     ngOnInit() {
@@ -68,8 +71,9 @@ export class GalleryComponent implements OnInit {
 
 
     addGallery() {
-        let input = prompt("Please enter name of new gallery", "gallery");
+        const input =  (<HTMLInputElement>document.getElementById('recipient-name')).value;
         let galleryName = input.replace(/\//g, '');
+        console.log(galleryName);
         let json = {
             name: galleryName
         };
@@ -87,17 +91,19 @@ export class GalleryComponent implements OnInit {
 
     removeGallery(item) {
         console.log(item);
-        if (confirm("are u sure ?")) {
             this._dataService.removeGallery(item.path).subscribe(data => {
 
             }, error => {
                 console.error(error);
             });
-
             this.getGalleries();
             this._flashMessagesService.show('Gallery successfuly removed !!',
                 {cssClass: 'alert-warning', timeout: 1500});
-        }
+
+
+    }
+
+    afterLeavingCard(){
 
     }
 

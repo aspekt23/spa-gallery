@@ -1,9 +1,6 @@
 <div (click)="hideOverlay()" id="overlay"></div>
 <div class="wrapper">
-    <div id="background">
-        <img src="{{background}}" alt="">
-
-    </div>
+    <div id="background" [ngStyle]="{'background-image': 'url(' + background + ')'}"></div>
     <h2>Fotogaléria</h2>
     <h4>Kategórie</h4>
     <hr>

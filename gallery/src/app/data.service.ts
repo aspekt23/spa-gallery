@@ -14,7 +14,6 @@ export class DataService {
 
     }
 
-
     getGalleries() {
         let url = 'http://api.programator.sk/gallery';
         return this.http.get(url,{headers: this.headers})

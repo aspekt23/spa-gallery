@@ -85,7 +85,7 @@ h4.card-title.imagesCount {
     line-height: 16px;
     width: 100%;
     background: white;
-    transition: display 0s, opacity 0.5s linear;
+    transition: opacity 0.5s ease-out;
 }
 
 h4.card-title.title {
