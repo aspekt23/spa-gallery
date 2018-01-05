@@ -11,11 +11,11 @@
         <flash-messages></flash-messages>
         <div class="gallery clearfix  row">
 
-            <div class="card" *ngFor="let item of galleries;let index = index;"
-                 (mouseenter)=" setBackground(item?.image?.fullpath)"
-                 (mouseover)="item[showCount] = true; getImagesCount(item.path);"
-                 (mouseleave)="item[showCount] = false">
-                <img class="card-img-top" [routerLink]="['/'+item.path]"
+            <div class="card" *ngFor="let item of galleries;let index = index; "
+                 (mouseenter)=" setBackground(item?.image?.fullpath);getImagesCount(item.path)"
+                 (mouseover)="item[showCount] = 'show'"
+                 (mouseleave)="item[showCount] = 'hide'">
+                <img [imageLazyLoadItem] class="card-img-top" [routerLink]="['/'+item.path]"
                      [src]="item?.image?.fullpath ? path + '0x156/' + item?.image?.fullpath : defaultImage"
                      alt="Card image cap">
                 <div class="card-block ">
@@ -49,7 +49,8 @@
                         </div>
                     </div>
 
-                    <span class="imagesCount animated zoomIn" [hidden]="!item[showCount]">{{imagesCount}}</span>
+                    <span style="opacity: 0" class="imagesCount"
+                          [@showCount]="item[showCount]">{{imagesCount}}</span>
                 </div>
             </div>
 

@@ -9,6 +9,8 @@ import { GalleryComponent } from './components/gallery/gallery.component';
 import { ImagesComponent } from './components/images/images.component';
 import {DataService} from "./data.service";
 import { HttpModule } from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { HttpModule } from '@angular/http';
     Ng2Webstorage,
     HttpModule,
     FlashMessagesModule.forRoot(),
-    DndModule.forRoot()
+    DndModule.forRoot(),
+    BrowserAnimationsModule
+
 
   ],
   providers: [DataService],

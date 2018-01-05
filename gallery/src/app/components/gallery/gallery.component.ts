@@ -4,14 +4,26 @@ import {DataService} from "../../data.service";
 import {LocalStorageService} from 'ngx-webstorage';
 import {Http} from "@angular/http";
 import {FlashMessagesService} from 'angular2-flash-messages';
-import { trigger, style, animate, transition } from '@angular/animations';
+import {trigger, style, animate, transition, state} from '@angular/animations';
 
 
 @Component({
     selector: 'app-gallery',
     templateUrl: './gallery.component.html',
     styleUrls: ['./gallery.component.css'],
-    providers: [ImagesComponent]
+    providers: [ImagesComponent],
+    animations: [
+        trigger('showCount', [
+            state('show', style({
+                opacity: 1
+            })),
+            state('hide', style({
+                opacity: 0
+            })),
+            transition('show => hide', animate('200ms ease-out')),
+            transition('hide => show', animate('400ms ease-in'))
+        ])
+    ]
 })
 export class GalleryComponent implements OnInit {
     private galleries: any;
@@ -26,14 +38,13 @@ export class GalleryComponent implements OnInit {
     constructor(private _dataService: DataService,
                 private _flashMessagesService: FlashMessagesService) {
 
-        this.imagesCount = '';
 
     }
 
     ngOnInit() {
 
         this.getGalleries();
-        console.log(this.background);
+        this.galleries.map(item => item['showCount'] = 'hide');
 
     }
 
@@ -41,11 +52,10 @@ export class GalleryComponent implements OnInit {
     getGalleries() {
         this._dataService.getGalleries().subscribe(data => {
             this.galleries = data.galleries;
+            let defaultBackground = this.galleries[0].image.fullpath;
+            this.setBackground(defaultBackground);
+            this.galleries.map(item => item['showCount'] = 'hide');
 
-             let defaultBackground = this.galleries[0].image.fullpath;
-             this.setBackground(defaultBackground);
-             this.galleries.map(item => item['showCount'] = false);
-             console.log(this.galleries)
         });
     }
 
@@ -71,7 +81,7 @@ export class GalleryComponent implements OnInit {
 
 
     addGallery() {
-        const input =  (<HTMLInputElement>document.getElementById('recipient-name')).value;
+        const input = (<HTMLInputElement>document.getElementById('recipient-name')).value;
         let galleryName = input.replace(/\//g, '');
         console.log(galleryName);
         let json = {
@@ -82,7 +92,7 @@ export class GalleryComponent implements OnInit {
             this._flashMessagesService.show('Gallery ' + galleryName + ' was successfuly created.',
                 {cssClass: 'alert-success', timeout: 1500});
             this.getGalleries();
-        },error => {
+        }, error => {
             this._flashMessagesService.show('Galéria s takým názvom už existuje',
                 {cssClass: 'alert-danger', timeout: 1500});
         });
@@ -91,19 +101,19 @@ export class GalleryComponent implements OnInit {
 
     removeGallery(item) {
         console.log(item);
-            this._dataService.removeGallery(item.path).subscribe(data => {
+        this._dataService.removeGallery(item.path).subscribe(data => {
 
-            }, error => {
-                console.error(error);
-            });
-            this.getGalleries();
-            this._flashMessagesService.show('Gallery successfuly removed !!',
-                {cssClass: 'alert-warning', timeout: 1500});
+        }, error => {
+            console.error(error);
+        });
+        this.getGalleries();
+        this._flashMessagesService.show('Gallery successfuly removed !!',
+            {cssClass: 'alert-warning', timeout: 1500});
 
 
     }
 
-    afterLeavingCard(){
+    afterLeavingCard() {
 
     }
 
