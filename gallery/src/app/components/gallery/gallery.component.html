@@ -15,7 +15,7 @@
                  (mouseenter)=" setBackground(item?.image?.fullpath);getImagesCount(item.path)"
                  (mouseover)="item[showCount] = 'show'"
                  (mouseleave)="item[showCount] = 'hide'">
-                <img [imageLazyLoadItem] class="card-img-top" [routerLink]="['/'+item.path]"
+                <img  class="card-img-top" [routerLink]="['/'+item.path]"
                      [src]="item?.image?.fullpath ? path + '0x156/' + item?.image?.fullpath : defaultImage"
                      alt="Card image cap">
                 <div class="card-block ">
