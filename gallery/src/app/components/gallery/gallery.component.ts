@@ -32,7 +32,7 @@ export class GalleryComponent implements OnInit {
     private fullPathUrl: string;
     private defaultImage: string = 'http://saveabandonedbabies.org/wp-content/uploads/2015/08/default.png';
     private background: any;
-    private path = 'http://api.programator.sk/images/';
+    private path;;
 
 
     constructor(private _dataService: DataService,
@@ -42,7 +42,7 @@ export class GalleryComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        this.getImagePath(20,540,'awdawdawd');
         this.getGalleries();
         this.galleries.map(item => item['showCount'] = 'hide');
 
@@ -50,11 +50,16 @@ export class GalleryComponent implements OnInit {
 
 
     getGalleries() {
-        this._dataService.getGalleries().subscribe(data => {
+        this._dataService.request('get').subscribe(data => {
             this.galleries = data.galleries;
-            let defaultBackground = this.galleries[0].image.fullpath;
-            this.setBackground(defaultBackground);
-            this.galleries.map(item => item['showCount'] = 'hide');
+            console.log(this.galleries);
+            if("image" in this.galleries[0]){
+                console.log(this.galleries[0].image);
+                    let defaultBackground = this.galleries[0].image.fullpath;
+                    this.setBackground(defaultBackground);
+                    this.galleries.map(item => item['showCount'] = 'hide');
+            }
+
 
         });
     }
@@ -71,23 +76,21 @@ export class GalleryComponent implements OnInit {
 
     getImagesCount(path) {
 
-        this._dataService.getImages(path).subscribe(data => {
+        this._dataService.request('get', path).subscribe(data => {
             console.log('getImagesCount');
             this.imagesCount = data.images.length + ' fotiek';
-
-
         });
     }
 
 
     addGallery() {
-        const input = (<HTMLInputElement>document.getElementById('recipient-name')).value;
+      const input = (<HTMLInputElement>document.getElementById('recipient-name')).value;
         let galleryName = input.replace(/\//g, '');
         console.log(galleryName);
         let json = {
             name: galleryName
         };
-        this._dataService.addGallery(json).subscribe(data => {
+        this._dataService.request('post', '', json).subscribe(data => {
             this.galleries.push(data);
             this._flashMessagesService.show('Gallery ' + galleryName + ' was successfuly created.',
                 {cssClass: 'alert-success', timeout: 1500});
@@ -101,7 +104,7 @@ export class GalleryComponent implements OnInit {
 
     removeGallery(item) {
         console.log(item);
-        this._dataService.removeGallery(item.path).subscribe(data => {
+        this._dataService.request('delete', item.path).subscribe(data => {
 
         }, error => {
             console.error(error);
@@ -109,13 +112,16 @@ export class GalleryComponent implements OnInit {
         this.getGalleries();
         this._flashMessagesService.show('Gallery successfuly removed !!',
             {cssClass: 'alert-warning', timeout: 1500});
-
-
     }
 
-    afterLeavingCard() {
-
+    getImagePath(width = 0, height = 0, path) {
+        if(path){
+            this.path = 'http://api.programator.sk/images/' + width + 'x' + height + '/' +path;
+            return this.path;
+        }
+        else return this.defaultImage;
     }
+
 
 
 }

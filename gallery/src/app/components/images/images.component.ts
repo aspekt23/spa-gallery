@@ -16,6 +16,7 @@ export class ImagesComponent implements OnInit {
     private imagesCollection: any;
     private headers: Headers;
     private background: any;
+    private temp:any;
 
     constructor(route: ActivatedRoute, private _dataService: DataService,
                 private _flashMessagesService: FlashMessagesService,
@@ -27,58 +28,75 @@ export class ImagesComponent implements OnInit {
             this.getImages();
         });
 
-        this.headers = new Headers();
-        this.headers.append('Content-Type', 'multipart/form-data;boundary=--boundary');
-        this.headers.append('Accept', 'application/json');
+
+
     }
 
     ngOnInit() {
-
         this.getImages();
-
+        console.log(this.imagesCollection);
     }
 
     getImages() {
-        this._dataService.getImages(this.selectedCategory).subscribe(data => {
+        this._dataService.request('get', this.selectedCategory).subscribe(data => {
             console.log(data);
             this.imagesCollection = data.images;
             console.log(this.imagesCollection);
-            let width= window.innerWidth;
-            this.background =
-                'http://api.programator.sk/images/'+ width +'x0/'+this.imagesCollection[0].fullpath;
+            let width = window.innerWidth;
+            let imagePath = this.imagesCollection[0].fullpath ? this.imagesCollection[0].fullpath : '';
+            this.background = this.getImagePath(width, 0, imagePath);
         });
     }
 
+    getImagePath(width = 0, height = 0, path) {
+        return 'http://api.programator.sk/images/' + width + 'x' + height +'/'+ path;
+    }
 
     removeImage(fullpath) {
-        //http://api.programator.sk/gallery/zvierata/2017-Audi-A4-20T-quattro-front-view-in-motion-02-1.jpg
-        if (confirm("are u sure ?")) {
-            this._dataService.removeImage(fullpath).subscribe(data => {
+        console.log(this.imagesCollection);
+        console.log(fullpath);
+            this._dataService.request('delete', fullpath).subscribe(data => {
                 console.log(data);
             });
             this.getImages();
             this._flashMessagesService.show('Image was successfully removed!',
                 {cssClass: 'alert-success', timeout: 1500});
-        }
+
 
 
     }
 
-    showLightBox(item){
-        let width = window.innerWidth - 100 ;
+    showLightBox(item) {
+        let width = window.innerWidth - 100;
         let height = window.innerHeight
-        let url = 'http://api.programator.sk/images/'+width+'x'+ height +'/'+item;
+        let url = this.getImagePath(width, height, '/' + item);
         document.getElementById('overlay').style.display = "block";
-        document.getElementById('overlay').innerHTML = '<img class="lightImage" src="'+ url +'">';
+        document.getElementById('overlay').innerHTML = '<img class="lightImage" src="' + url + '">';
     }
 
-    hideOverlay(){
+    hideOverlay() {
         document.getElementById('overlay').style.display = "none";
     }
 
+    changeListener($event) : void {
+        console.log(event);
+        this.readThis($event.target);
+    }
 
-    transferDataSuccess($event) {
-        // let attachmentUploadUrl = 'assets/data/offerspec/offerspec.json';
+    readThis(inputValue: any) : void {
+        var file:File = inputValue.files[0];
+        var myReader:FileReader = new FileReader();
+
+        myReader.onloadend = function(e){
+            // you can perform an action with readed data here
+            console.log(myReader.result);
+        }
+
+        myReader.readAsText(file);
+    }
+
+
+    addImage($event) {
         // loading the FileList from the dataTransfer
         let dataTransfer: DataTransfer = $event.mouseEvent.dataTransfer;
         if (dataTransfer && dataTransfer.files) {
@@ -103,13 +121,13 @@ export class ImagesComponent implements OnInit {
 
 
                 // posting the data
-                let url = 'http://api.programator.sk/gallery/'+ this.selectedCategory;
-                this._http.post(url, data, {headers : this.headers})
+                let url = 'http://api.programator.sk/gallery/' + this.selectedCategory;
+                this._http.post(url, data )
                     .toPromise()
                     .catch(reason => {
                         console.log(JSON.stringify(reason));
                     }).then(result => {
-                    console.log('From Promise:', result);
+                    this.getImages();
                 });
             }
         }

@@ -7,7 +7,6 @@
     <h4>Kategórie</h4>
     <hr>
     <div class="container">
-
         <flash-messages></flash-messages>
         <div class="gallery clearfix  row">
 
@@ -16,11 +15,12 @@
                  (mouseover)="item[showCount] = 'show'"
                  (mouseleave)="item[showCount] = 'hide'">
                 <img  class="card-img-top" [routerLink]="['/'+item.path]"
-                     [src]="item?.image?.fullpath ? path + '0x156/' + item?.image?.fullpath : defaultImage"
+                     [src]="getImagePath(0,156,item?.image?.fullpath)"
                      alt="Card image cap">
                 <div class="card-block ">
                     <h4 class="card-title imagesCount"></h4>
                     <h4 class="card-title title">{{item.name}}</h4>
+
                     <!-- Button trigger remove modal -->
                     <img data-toggle="modal" data-target="#removeModal" class="closeIcon"
                          src="../../../assets/images/close.png" alt="">
