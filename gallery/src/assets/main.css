@@ -63,6 +63,48 @@ span.imagesCount.ng-trigger.ng-trigger-showCount {
     transform: scale(1.2);
 }
 
+i.material-icons.addImage {
+  font-size: 50px;
+  color: #e1e1e1;
+  text-align: center;
+  line-height: 212px;
+}
+.custom-file-upload {
+  border: 3px solid #ccc;
+  display: inline-block;
+  padding: 4px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+img.previewImage {
+  width: calc(100%/3);
+  max-height: 100px;
+}
+
+div#previewImages {
+  padding: 15px;
+}
+div#previewImages > img:nth-child(2n+1) {
+  padding: 5px 15px;
+}
+.card-block.add {
+  /* display: grid; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+.modal-footer {
+  border: 1px dotted #a9a9a9;
+  margin: 15px;
+  /* color: black; */
+}
+
 hr {
     margin-top: 1rem;
     border: 0;

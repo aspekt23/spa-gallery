@@ -1,71 +1,104 @@
 <div (click)="hideOverlay()" id="overlay"></div>
 <div class="wrapper">
-    <div id="background" [ngStyle]="{'background-image': 'url(' + background + ')'}"></div>
-    <h2>Fotogaléria</h2>
-    <h4>Kategórie</h4>
-    <hr>
-    <flash-messages></flash-messages>
-    <div class="gallery clearfix container row">
+  <div id="background" [ngStyle]="{'background-image': 'url(' + background + ')'}"></div>
+  <h2>Fotogaléria</h2>
+  <h4>Kategórie</h4>
+  <hr>
+  <flash-messages></flash-messages>
+  <div class="gallery clearfix container row">
 
-        <div class="card" style=""
-             *ngFor="let item of imagesCollection;">
-            <img class="card-img-top" src="http://api.programator.sk/images/0x156/{{item.fullpath}}"
-                 alt="Card image cap" (click)="showLightBox(item.fullpath)">
-            <div class="card-body">
-                {{item.name}}
+    <div class="card" style=""
+         *ngFor="let item of imagesCollection;">
+      <img class="card-img-top" src="http://api.programator.sk/images/0x156/{{item.fullpath}}"
+           alt="Card image cap" (click)="showLightBox(item.fullpath)">
+      <div class="card-body">
+        {{item.name}}
 
-                <img data-toggle="modal" data-target="#removeModal" class="closeIcon"
-                     src="../../../assets/images/close.png"
-                     alt="" (click)="removeImage(item.fullpath);">
-
-
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-block add">
-                <div dnd-droppable class="panel panel-info drag-and-drop"
-                     (onDropSuccess)="addImage($event)">
-                    <div class="panel-heading">Place to drop</div>
-                    <div class="panel-body">
-                    </div>
-
-                    <i class="material-icons addgallery" (click)="addImage()">add_to_photos</i>
-                    Select file:
-                    <input type="file" (change)="changeListener($event)">
+        <img data-toggle="modal" data-target="#removeModal" class="closeIcon"
+             src="../../../assets/images/close.png"
+             alt="" (click)="removeImage(item.fullpath);">
 
 
-
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+
+    <div class="card">
+
+      <!-- Button trigger remove modal -->
+      <i class="material-icons addgallery addImage" data-toggle="modal" data-target="#addModal"
+         data-whatever="@getbootstrap">add_to_photos</i>
+
+      <!-- remove modal -->
+      <div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+           aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add Image</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div id="previewImages" class="modal-preview">
+            </div>
+            <!--<div class="modal-footer" dnd-droppable (onDropSuccess)="addImage($event)">-->
+            <div class="modal-footer" dnd-droppable (onDropSuccess)="addImage($event)">
+              <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+              <div class="card-block add">
+                <div class="panel-heading">
+                  <!--<i class="material-icons addgallery" (click)="addImage()">add_to_photos</i>-->
+                </div>
+                <div class="panel-body">
+                  Sem presunte fotky
+                  <p class="text-center">alebo</p>
+                </div>
+                <label class="custom-file-upload">
+                  <input type="file" (change)="previewFile(null)"/>
+                  Add Image
+                </label>
+
+              </div>
+
+              <!--<button type="button" class="btn btn-danger" (click)="removeGallery(item)"-->
+              <!--data-dismiss="modal">Yes-->
+              <!--</button>-->
+            </div>
+            <button type="button" class="btn btn-success" data-dismiss="modal" aria-label="Close">
+              ADD
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <!-- Modal for adding image/s -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel2">Add gallery</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Zadajte názov galérie</label>
-                        <input type="text" class="form-control" id="recipient-name">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" (click)="addGallery()" data-dismiss="modal">Pridať
-                </button>
-            </div>
-        </div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel2">Add gallery</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Zadajte názov galérie</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" (click)="addGallery()" data-dismiss="modal">Pridať
+        </button>
+      </div>
     </div>
+  </div>
 </div>

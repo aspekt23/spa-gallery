@@ -10,6 +10,7 @@ import { ImagesComponent } from './components/images/images.component';
 import {DataService} from "./data.service";
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReaderComponent } from './components/reader/reader.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppComponent,
     GalleryComponent,
     ImagesComponent,
+    ReaderComponent,
 
 
   ],
