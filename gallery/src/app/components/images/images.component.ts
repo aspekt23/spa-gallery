@@ -18,6 +18,8 @@ export class ImagesComponent implements OnInit {
   private headers: Headers;
   private background: any;
   private temp: any;
+  private imagesToUpload = [];
+  private loading: boolean = false;
 
   constructor(route: ActivatedRoute, private _dataService: DataService,
               private _flashMessagesService: FlashMessagesService,
@@ -38,6 +40,7 @@ export class ImagesComponent implements OnInit {
   }
 
   getImages() {
+    this.loading = true;
     this._dataService.request('get', this.selectedCategory).subscribe(data => {
       console.log(data);
       this.imagesCollection = data.images;
@@ -45,12 +48,16 @@ export class ImagesComponent implements OnInit {
       let width = window.innerWidth;
       let imagePath = this.imagesCollection[0].fullpath ? this.imagesCollection[0].fullpath : '';
       this.background = this.getImagePath(width, 0, imagePath);
+    this.loading = false;
     });
+
   }
 
   getImagePath(width = 0, height = 0, path) {
     return 'http://api.programator.sk/images/' + width + 'x' + height + '/' + path;
   }
+
+
 
   removeImage(fullpath) {
     console.log(this.imagesCollection);
@@ -77,98 +84,101 @@ export class ImagesComponent implements OnInit {
     document.getElementById('overlay').style.display = "none";
   }
 
-  changeListener($event): void {
-    console.log(event);
-    this.readThis($event.target);
-  }
+  // changeListener($event): void {
+  //   console.log(event);
+  //   this.readThis($event.target);
+  // }
+  //
+  // readThis(inputValue: any): void {
+  //   var file: File = inputValue.files[0];
+  //   var myReader: FileReader = new FileReader();
+  //
+  //   myReader.onloadend = function (e) {
+  //     // you can perform an action with readed data here
+  //     console.log(myReader.result);
+  //   }
+  //
+  //   myReader.readAsText(file);
+  // }
 
-  readThis(inputValue: any): void {
-    var file: File = inputValue.files[0];
-    var myReader: FileReader = new FileReader();
+  uploadImage() {
+    // uploading the files one by one asynchrounusly
+    for (let i = 0; i < this.imagesToUpload.length; i++) {
+      let file: File = this.imagesToUpload[i];
+      console.log(file);
 
-    myReader.onloadend = function (e) {
-      // you can perform an action with readed data here
-      console.log(myReader.result);
-    }
+      // just for debugging
+      console.log('Name: ' + file.name + '\n Type: ' + file.type + '\n Size: ' + file.size + '\n Date: ' + file.lastModifiedDate);
 
-    myReader.readAsText(file);
-  }
+      // collecting the data to post
+      let data = new FormData();
+      data.append('file', file);
+      data.append('fileName', file.name);
+      data.append('fileSize', file.size.toString());
+      data.append('fileType', file.type);
+      data.append('fileLastMod', file.lastModifiedDate);
 
-
-  addImage($event) {
-    // loading the FileList from the dataTransfer
-    let dataTransfer: DataTransfer = $event.mouseEvent.dataTransfer;
-    if (dataTransfer && dataTransfer.files) {
-
-      // needed to support posting binaries and usual form values
-      let files: FileList = dataTransfer.files;
-
-      // uploading the files one by one asynchrounusly
-      for (let i = 0; i < files.length; i++) {
-        let file: File = files[i];
-
-        // just for debugging
-        console.log('Name: ' + file.name + '\n Type: ' + file.type + '\n Size: ' + file.size + '\n Date: ' + file.lastModifiedDate);
-
-        // collecting the data to post
-        let data = new FormData();
-        data.append('file', file);
-        data.append('fileName', file.name);
-        data.append('fileSize', file.size.toString());
-        data.append('fileType', file.type);
-        data.append('fileLastMod', file.lastModifiedDate);
-
-
-        // posting the data
-        let url = 'http://api.programator.sk/gallery/' + this.selectedCategory;
-        this._http.post(url, data)
-          .toPromise()
-          .catch(reason => {
-            console.log(JSON.stringify(reason));
-          }).then(result => {
-          this.getImages();
+      // posting the data
+      let url = 'http://api.programator.sk/gallery/' + this.selectedCategory;
+      this._http.post(url, data)
+        .toPromise()
+        .catch(reason => {
+          console.log(JSON.stringify(reason));
         });
-      }
     }
+    console.log('images upload done');
+    this.getImages();
   }
+
 
   previewFile($event) {
-
-    //create preview img
-    let elem = document.createElement("img");
-    elem.className = "previewImage";
-
     if ($event) {
-      console.log($event);
       let dataTransfer: DataTransfer = $event.mouseEvent.dataTransfer;
       if (dataTransfer && dataTransfer.files) {
-
         // needed to support posting binaries and usual form values
         let files: FileList = dataTransfer.files;
-
         for (let i = 0; i < files.length; i++) {
-          console.log(files);
           let file: File = files[i];
           console.log(file);
-          elem.src = file.name
+          this.collectImages(files[i]);
+          this.createElement("img", URL.createObjectURL(file));
         }
       }
     }
     else {
-      // elem.setAttribute("alt", "Flower");
       let file = (<HTMLInputElement>document.querySelector('input[type=file]')).files[0];
+      console.log(file);
       let reader = new FileReader();
-
-      reader.addEventListener("load", function () {
-        elem.src = reader.result;
-        document.getElementById("previewImages").appendChild(elem);
-      }, false);
-
+      this.collectImages(file);
+      reader.onload = (evt) => {
+        this.createElement("img", reader.result);
+      };
       if (file) {
         reader.readAsDataURL(file);
       }
-
     }
-
+    console.log(this.imagesToUpload);
   }
+
+  collectImages(file) {
+    let length = this.imagesToUpload.length;
+    this.imagesToUpload[length] = file;
+    console.log(this.imagesToUpload);
+  }
+
+  resetValues(id){
+    this.imagesToUpload = [];
+    var elementToClear = document.getElementById(id);
+    while (elementToClear.firstChild) {
+      elementToClear.removeChild(elementToClear.firstChild);
+    }
+  }
+  createElement(type, src) {
+    let elem = document.createElement(type);
+    elem.className = "previewImage";
+    elem.src = src;
+    document.getElementById("previewImages").appendChild(elem);
+  }
+
+
 }

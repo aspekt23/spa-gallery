@@ -229,12 +229,64 @@ div#overlay {
     width: 100%;
 }
 
-#loader {
-    position: fixed;
-    left: 50%;
-    margin-left: -50px;
-    height: 100px;
-    z-index: 999999999999;
+button.btn.btn-success {
+  width: calc(100%/3);
+  text-align: center;
+  display: block;
+  /* float: right; */
+  background: #28a745;
+  border-color: #0000001f;
+  margin: 15px;
+  float: right;
+  /* position: absolute; */
+  /* left: 50px; */
+}
+
+.spinner {
+  padding-top: 20%;
+  text-align: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #9292929c;
+}
+
+.spinner > div {
+  width: 18px;
+  height: 18px;
+  background-color: #333;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 40% {
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+    }
 }
 
 

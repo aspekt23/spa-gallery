@@ -25,7 +25,8 @@
     <div class="card">
 
       <!-- Button trigger remove modal -->
-      <i class="material-icons addgallery addImage" data-toggle="modal" data-target="#addModal"
+      <i (click)="resetValues('previewImages')" class="material-icons addgallery addImage" data-toggle="modal"
+         data-target="#addModal"
          data-whatever="@getbootstrap">add_to_photos</i>
 
       <!-- remove modal -->
@@ -42,7 +43,7 @@
             <div id="previewImages" class="modal-preview">
             </div>
             <!--<div class="modal-footer" dnd-droppable (onDropSuccess)="addImage($event)">-->
-            <div class="modal-footer" dnd-droppable (onDropSuccess)="addImage($event)">
+            <div class="modal-footer" dnd-droppable (onDropSuccess)="previewFile($event)">
               <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
               <div class="card-block add">
                 <div class="panel-heading">
@@ -59,13 +60,13 @@
 
               </div>
 
-              <!--<button type="button" class="btn btn-danger" (click)="removeGallery(item)"-->
-              <!--data-dismiss="modal">Yes-->
-              <!--</button>-->
             </div>
-            <button type="button" class="btn btn-success" data-dismiss="modal" aria-label="Close">
-              ADD
-            </button>
+            <div class="footer">
+              <button (click)="uploadImage()" type="button" class="btn btn-success" data-dismiss="modal"
+                      aria-label="Close">
+                ADD
+              </button>
+            </div>
           </div>
         </div>
 
@@ -101,4 +102,11 @@
       </div>
     </div>
   </div>
+</div>
+
+<!--loader-->
+<div id="spinner" class="spinner" *ngIf="loading">
+  <div class="bounce1"></div>
+  <div class="bounce2"></div>
+  <div class="bounce3"></div>
 </div>
